@@ -12,6 +12,7 @@ BOARD_SIZE_MAX                  = 100;
 //nema_23_holes();
 //noctua_40mm_fan_holes();
 //lynxmotion_lss_servo_holes();
+hart_mower_battery_interface();
 
 module arduino_uno_posts(top = false)
 {
@@ -78,7 +79,6 @@ module arduino_uno_posts(top = false)
         four_posts_with_supports(post_height, post_outer_diameter, post_inner_diameter, 0, 0, support_diameter, support_count, support_start_angle, support_thickness, support_flip);
     }
 }
-
 module raspberry_pi_model_b_plus_posts()
 {
     /* Post parameters */
@@ -123,7 +123,6 @@ module raspberry_pi_model_b_plus_posts()
     translate([hole4_offset_length, board_width - hole4_offset_width, 0])
     four_posts_with_supports(post_height, post_outer_diameter, post_inner_diameter, 0, 0, support_diameter, support_count, support_start_angle, support_thickness, support_flip);
 }
-
 module renesas_synergy_ae_cloud1_posts()
 {
     /* Post parameters */
@@ -225,7 +224,6 @@ module nema_17_holes()
     translate([hole5_offset_length, total_width - hole5_offset_width, -shaft_length])
     four_posts(shaft_length, shaft_diameter, 0, 0, 0);
 }
-
 module nema_23_holes()
 {
     /* Hole parameters */
@@ -427,4 +425,32 @@ module lynxmotion_lss_servo_holes()
     /* Hole 11: */
     translate([hole11_offset_length, servo_width - hole11_offset_width, -(servo_base_cutout_depth / 2)])
     cube([servo_base_cutout_width, servo_width, servo_base_cutout_depth], center = true);
+}
+module hart_mower_battery_interface()
+{
+	track_length 				= 101.8;
+	
+	track_width					= 63.0;
+
+	track_depth					= 13.9;
+	track_depth_inner_offset	= 5.0;
+	track_inner_depth_major 	= 7.8; 
+	track_inner_depth_minor		= 6.6;
+	track_outer_depth_major		= track_depth - track_inner_depth_minor;
+	track_outer_depth_minor		= track_depth - track_inner_depth_major;
+	
+	translate([0, 0, 0])
+	difference()
+	{
+		/* Main body */
+		cube([track_length, track_width, track_depth]);
+		
+		/* First cutout */
+		translate([-1, track_width - track_depth_inner_offset, -1])
+		cube([track_length + 2, track_depth_inner_offset + 1, track_inner_depth_minor + 1]);
+		
+		/* Second cutout */
+		translate([-1, -1, -1])
+		cube([track_length + 2, track_depth_inner_offset + 1, track_inner_depth_minor + 1]);
+	}
 }
