@@ -1,8 +1,8 @@
 
 /* Examples for viewing */
-hart_mower_battery_interface();
+hart_40v_battery_interface();
 
-module hart_mower_battery_interface()
+module hart_40v_battery_interface()
 {
 	track_length 				= 101.8;
 	
